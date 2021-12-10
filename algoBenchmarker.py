@@ -73,9 +73,14 @@ class AlgoBenchmarker:
             raise ValueError("No unsorted list found (t_list)")
         if t_list is None:
             t_list = self.t_list
-        start_time = time.time_ns()
-        result = self.s_func(t_list)
-        end_time = time.time_ns()
+        start_time, result, end_time = 0, 0, 0
+        try:
+            start_time = time.time_ns()
+            result = self.s_func(t_list)
+            end_time = time.time_ns()
+        except Exception as ex:
+            print("An error occurred during sort:")
+            print(ex)
         duration = end_time - start_time
         is_success = error_check(result)
         bm_res = construct_bm_result(self.algo_name, is_success, result, duration)
